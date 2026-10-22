@@ -86,19 +86,3 @@ The API will be available at `http://127.0.0.1:8000/`.
 ## Postman Testing Evidence
 
 Add screenshots of your API tests below to demonstrate the endpoints and their responses.
-
-### 1. Get All Reporters
-
-![Get All Reporters](screenshots/get-all-reporters.png)
-
-### 2. Create Reporter
-
-![Create Reporter](screenshots/create-reporter.png)
-
-### 3. Get All Issues
-
-![Get All Issues](screenshots/get-all-issues.png)
-
-### 4. Create Issue
-
-![Create Issue](screenshots/create-issue.png)
