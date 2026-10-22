@@ -5,7 +5,7 @@
     "description": "full details",
     "status": "open",
     "priority": "low",
-    "reporter_id": "ID of the Reporter who filed this"
+    "reporter_id": "2"
   },
   {
     "id": 2,
@@ -14,5 +14,13 @@
     "status": "open",
     "priority": "critical",
     "reporter_id": "4"
+  },
+  {
+    "id": 3,
+    "title": "UAT Issue",
+    "description": "UAT Issue",
+    "status": "open",
+    "priority": "Low",
+    "reporter_id": "2"
   }
 ]

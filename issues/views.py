@@ -3,7 +3,7 @@ from typing import override
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.response import Response
+from django.http import JsonResponse
 
 from issues.models import CriticalIssue, Issue, LowPriorityIssue, Reporter
 
@@ -25,19 +25,20 @@ class ReporterViews(APIView):
     @override
     def get(self, request):
         reporters = self.__get_all_reporters()
-        reporter_id = request.query_params.get('id')
+        reporter_id = request.GET.get('id')
         if reporter_id is None:
-            return Response(
+            return JsonResponse(
                 [r.to_dict() for r in reporters], 
+                safe=False,
                 status=status.HTTP_200_OK)
         try:
             reporter_id = int(reporter_id)
         except (TypeError, ValueError):
-            return Response({'error':'Invalid Id'}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'error':'Invalid Id'}, status=status.HTTP_400_BAD_REQUEST)
         for reporter in reporters:
             if reporter.id == reporter_id:
-                return Response(reporter.to_dict(), status=status.HTTP_200_OK)
-        return Response({'error': 'Reporter not found'}, status=404)
+                return JsonResponse(reporter.to_dict(), status=status.HTTP_200_OK)
+        return JsonResponse({'error': 'Reporter not found'}, status=404)
 
     @override
     def post(self, request):
@@ -52,11 +53,11 @@ class ReporterViews(APIView):
         try:
             reporter.validate()
         except ValueError as exc:
-            return Response({'error': str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'error': str(exc)}, status=status.HTTP_400_BAD_REQUEST)
         payload = reporter.to_dict()
         with open(REPORTERS_FILE,'w') as file:
             json.dump([r.to_dict() for r in reporters] + [payload],file, indent = 2)
-        return Response(payload, status = status.HTTP_201_CREATED)
+        return JsonResponse(payload, status = status.HTTP_201_CREATED)
 
 #Issues Views
 class IssueView(APIView):
@@ -71,29 +72,31 @@ class IssueView(APIView):
     @override
     def get(self, request):
         issues = self.__get_all_issues()
-        issue_id = request.query_params.get('id')
-        issue_status = request.query_params.get('status')
+        issue_id = request.GET.get('id')
+        issue_status = request.GET.get('status')
 
         if issue_id:
             try:
                 issue_id = int(issue_id)
             except(TypeError, ValueError):
-                return Response({'error':'Invalid Id'}, status=status.HTTP_400_BAD_REQUEST)
+                return JsonResponse({'error':'Invalid Id'}, status=status.HTTP_400_BAD_REQUEST)
             for issue in issues:
                 if issue.id == issue_id:
-                    return Response(issue.to_dict(), status=status.HTTP_200_OK)
+                    return JsonResponse(issue.to_dict(), status=status.HTTP_200_OK)
         elif issue_status:
             issues = [ i for i in issues if i.status == issue_status]
-            return Response(
+            return JsonResponse(
                 [i.to_dict() for i in issues],
+                safe=False,
                 status=status.HTTP_200_OK
             )
         else:
-            return Response(
+            return JsonResponse(
                 [i.to_dict() for i in issues],
+                safe=False,
                 status=status.HTTP_200_OK
             )
-        return Response({'error' : 'issue not found'}, status = status.HTTP_404_NOT_FOUND)
+        return JsonResponse({'error' : 'issue not found'}, status = status.HTTP_404_NOT_FOUND)
 
     def post(self, request):
         data = request.data
@@ -130,8 +133,8 @@ class IssueView(APIView):
         try:
             issue.validate()
         except ValueError as exc:
-            return Response({'error': str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'error': str(exc)}, status=status.HTTP_400_BAD_REQUEST)
         payload = issue.to_dict()
         with open(ISSUES_FILE, 'w') as file:
             json.dump([i.to_dict() for i in issues] + [payload], file, indent = 2)
-        return Response(payload, status = status.HTTP_201_CREATED)
+        return JsonResponse(payload, status = status.HTTP_201_CREATED)
