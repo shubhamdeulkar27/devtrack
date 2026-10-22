@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "title": "Pre-Prod Issue",
+    "description": "full details",
+    "status": "open",
+    "priority": "low",
+    "reporter_id": "ID of the Reporter who filed this"
+  },
+  {
+    "id": 2,
+    "title": "Live Issue",
+    "description": "Description",
+    "status": "open",
+    "priority": "critical",
+    "reporter_id": "4"
+  }
+]

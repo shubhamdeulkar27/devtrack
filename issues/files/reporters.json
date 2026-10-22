@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Test Test",
+    "email": "test@email.com",
+    "team": "backend"
+  },
+  {
+    "id": 2,
+    "name": "Dev Dev",
+    "email": "dev@email.com",
+    "team": "backend"
+  },
+  {
+    "id": 3,
+    "name": "Dev Manager",
+    "email": "devman@email.com",
+    "team": "backend"
+  },
+  {
+    "id": 4,
+    "name": "Test Manager",
+    "email": "testman@email.com",
+    "team": "backend"
+  }
+]
